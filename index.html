@@ -271,7 +271,46 @@ d3.json(url_geographicLines, function(error, geographicLines) {
 });
 
 
+function saveSvg(svgEl, name) {
+    svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = svgEl.outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = name;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+saveSvg(document.getElementsByTagName("svg")[0], 'test.svg')
+
 </script>
+
+<!--
+To export
+1) load page (10 seconds or more)
+2) open console
+3) run these commands:
+
+function saveSvg(svgEl, name) {
+    svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = svgEl.outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = name;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+};
+saveSvg(document.getElementsByTagName("svg")[0], 'test.svg');
+
+
+-->
 
 
 <!--
@@ -279,4 +318,5 @@ Sources:
 https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=9
 http://bl.ocks.org/almccon/a53831a573911d0a875821c5f9fac6be
 https://observablehq.com/@fil/the-imago-projection
+https://stackoverflow.com/questions/23218174/how-do-i-save-export-an-svg-file-after-creating-an-svg-with-d3-js-ie-safari-an
  -->
