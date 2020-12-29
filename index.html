@@ -11,11 +11,21 @@
 path.ocean {
   fill: #cce8fe;
 }
+path.bathymetryI2000 {
+  fill: #b3deff;
+}
+path.bathymetryG4000 {
+  fill: #99d3ff;
+}
+path.bathymetryE6000 {
+  fill: #80c8ff;
+}
+path.bathymetryC8000 {
+  fill: #66bdff;
+}
 
 path.countries {
   fill: #ddc;
-  stroke: #fff;
-  stroke-width: .5px;
 }
 
 path.countries.countyColor_1 {
@@ -61,29 +71,36 @@ path.lakes {
   stroke-width: .5px;
 }
 
+path.countriesTopLines {
+  fill: #0000;
+  stroke: #0004;
+  stroke-width: .5px;
+}
+
 path.graticules {
   fill: #0000;
-  fill-opacity: 0;
   stroke: #eee;
   stroke-width: .5px;
+}
+
+path.graticules.degrees_0 {
+  fill: #0000;
+  stroke: #eee;
+  stroke-width: 1px;
 }
 
 path.geographicLines {
   /*  hide other geographicLines*/
   fill: #0000;
-  fill-opacity: 0;
   stroke: #0000;
   stroke-width: 0px;
 }
 
 path.geographicLines.scalerank_0 {
   fill: #0000;
-  fill-opacity: 0;
   stroke: #eee;
   stroke-width: 1px;
 }
-
-
 
 
 
@@ -119,6 +136,12 @@ d3.selectAll('svg').attr("transform", "scale(1)");
 
 //URLs for data
 var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_ocean.geojson"
+
+var url_bathymetryI2000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_I_2000.geojson"
+var url_bathymetryG4000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_G_4000.geojson"
+var url_bathymetryE6000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_E_6000.geojson"
+var url_bathymetryC8000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_C_8000.geojson"
+
 var url_countries =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
 var url_glaciated =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_glaciated_areas.geojson"
 var url_rivers =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_rivers_lake_centerlines.geojson"
@@ -131,20 +154,31 @@ var url_places =                "https://raw.githubusercontent.com/nvkelso/natur
 
 //Layers in draw order (top layer will be last listed)
 var layer_ocean = svg.append('g');
+var layer_bathymetryI2000 = svg.append('g');
+var layer_bathymetryG4000 = svg.append('g');
+var layer_bathymetryE6000 = svg.append('g');
+var layer_bathymetryC8000 = svg.append('g');
 var layer_countries = svg.append('g');
 var layer_glaciated = svg.append('g');
 var layer_rivers = svg.append('g');
 var layer_lakes = svg.append('g');
+var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
 
 
+
 //Add data to map
 d3.json(url_ocean, function(error, ocean) {
+d3.json(url_bathymetryI2000, function(error, bathymetryI2000) {
+d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
+d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
+d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
 d3.json(url_countries, function(error, countries) {
 d3.json(url_glaciated, function(error, glaciated) {
 d3.json(url_rivers, function(error, rivers) {
 d3.json(url_lakes, function(error, lakes) {
+d3.json(url_countries, function(error, countriesTopLines) {
 d3.json(url_graticules, function(error, graticules) {
 d3.json(url_geographicLines, function(error, geographicLines) {
 
@@ -155,6 +189,30 @@ d3.json(url_geographicLines, function(error, geographicLines) {
   .enter().append("path")
     .attr("d", path)
     .attr("class", "ocean")
+
+  layer_bathymetryI2000.selectAll("path")
+    .data(bathymetryI2000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryI2000")
+
+  layer_bathymetryG4000.selectAll("path")
+    .data(bathymetryG4000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryG4000")
+
+  layer_bathymetryE6000.selectAll("path")
+    .data(bathymetryE6000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryE6000")
+
+  layer_bathymetryC8000.selectAll("path")
+    .data(bathymetryC8000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryC8000")
 
   layer_countries.selectAll("path")
     .data(countries.features)
@@ -180,11 +238,17 @@ d3.json(url_geographicLines, function(error, geographicLines) {
     .attr("d", path)
     .attr("class", "lakes")
 
+  layer_countriesTopLines.selectAll("path")
+    .data(countriesTopLines.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "countriesTopLines")
+
   layer_graticules.selectAll("path")
     .data(graticules.features)
   .enter().append("path")
     .attr("d", path)
-    .attr("class", "graticules")
+    .attr("class", function(d) { return "graticules degrees_"+d.properties.degrees})
 
   layer_geographicLines.selectAll("path")
     .data(geographicLines.features)
@@ -193,6 +257,11 @@ d3.json(url_geographicLines, function(error, geographicLines) {
     .attr("class", function(d) { return "geographicLines scalerank_"+d.properties.scalerank})
 
 
+})
+})
+})
+})
+})
 })
 })
 })
