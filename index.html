@@ -2,6 +2,10 @@
 <meta charset="utf-8">
 <style>
 
+body {
+  overflow: hidden;
+}
+
 /* path {
   fill: #ccc;
   stroke: #fff;
@@ -61,31 +65,29 @@ path.glaciated {
 path.rivers {
   fill: #0000;
   fill-opacity: 0;
-  stroke: #ddf;
-  stroke-width: .5px;
+  stroke: #99d3ff;
+  stroke-width: 1.0px;
 }
 
 path.lakes {
-  fill: #ddf;
-  stroke: #fff;
-  stroke-width: .5px;
+  fill: #99d3ff;
 }
 
 path.countriesTopLines {
   fill: #0000;
-  stroke: #0004;
+  stroke: #888;
   stroke-width: .5px;
 }
 
 path.graticules {
   fill: #0000;
-  stroke: #eee;
+  stroke: #999;
   stroke-width: .5px;
 }
 
 path.graticules.degrees_0 {
   fill: #0000;
-  stroke: #eee;
+  stroke: #999;
   stroke-width: 1px;
 }
 
@@ -98,7 +100,7 @@ path.geographicLines {
 
 path.geographicLines.scalerank_0 {
   fill: #0000;
-  stroke: #eee;
+  stroke: #999;
   stroke-width: 1px;
 }
 
@@ -118,10 +120,19 @@ path.geographicLines.scalerank_0 {
 <script>
 
 //Basics
-var width = 960,
-    height = 500;
+var defaultHieght=450;
+var defaultWidth=1039.23;
+var scaleFactor=10;
+//not sure what this is accounting for, but it works. 1.4 and 0.6 are made up for this project.
+var bufferHeight = scaleFactor*1.4;
+var bufferWidth = scaleFactor*0.6;
+
+var width = (defaultWidth*scaleFactor)+(bufferWidth*2),
+    height = (defaultHieght*scaleFactor)+(bufferHeight*2);
 
 var projection = d3.geoImago();
+projection.scale(150*scaleFactor);//150 is default
+projection.translate([(width/2)+bufferWidth,(height/2)+bufferHeight]);
 
 var path = d3.geoPath()
   .projection(projection)
@@ -130,27 +141,27 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-//strech
-d3.selectAll('svg').attr("transform", "scale(1)");
-
 
 //URLs for data
-var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_ocean.geojson"
+
+var detail=10; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
+
+var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_ocean.geojson"
 
 var url_bathymetryI2000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_I_2000.geojson"
 var url_bathymetryG4000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_G_4000.geojson"
 var url_bathymetryE6000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_E_6000.geojson"
 var url_bathymetryC8000 =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_bathymetry_C_8000.geojson"
 
-var url_countries =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
-var url_glaciated =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_glaciated_areas.geojson"
-var url_rivers =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_rivers_lake_centerlines.geojson"
-var url_lakes =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_lakes.geojson"
+var url_countries =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_admin_0_countries.geojson";
+var url_glaciated =             "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_glaciated_areas.geojson"
+var url_rivers =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_rivers_lake_centerlines.geojson"
+var url_lakes =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_lakes.geojson"
 var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_graticules_10.geojson"
-var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_geographic_lines.geojson"
+var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
-var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_populated_places_simple.geojson"
-
+var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
+var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
 
 //Layers in draw order (top layer will be last listed)
 var layer_ocean = svg.append('g');
@@ -272,29 +283,16 @@ d3.json(url_geographicLines, function(error, geographicLines) {
 
 
 </script>
+</body>
+</html>
 
 <!--
 To export
-1) load page (10 seconds or more)
-2) open console
-3) run these commands:
-
-function saveSvg(svgEl, name) {
-    svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    var svgData = svgEl.outerHTML;
-    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
-    var svgUrl = URL.createObjectURL(svgBlob);
-    var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = name;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-};
-saveSvg(document.getElementsByTagName("svg")[0], 'test.svg');
-
-
+1) load page (60 seconds or more)
+2) set zoom to 100%
+3) Open dev tools (ctrl+shift+i)
+3) Open command prompt (ctrl+shift+p)
+5) type 'screenshot' and select 'Capture full size screenshot'
 -->
 
 
@@ -304,4 +302,5 @@ https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=9
 http://bl.ocks.org/almccon/a53831a573911d0a875821c5f9fac6be
 https://observablehq.com/@fil/the-imago-projection
 https://stackoverflow.com/questions/23218174/how-do-i-save-export-an-svg-file-after-creating-an-svg-with-d3-js-ie-safari-an
+https://www.howtogeek.com/423558/how-to-take-full-page-screenshots-in-google-chrome-without-using-an-extension/
  -->
