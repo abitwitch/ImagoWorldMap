@@ -287,7 +287,7 @@ d3.json(url_geographicLines, function(error, geographicLines) {
 </html>
 
 <!--
-To export
+To export as PNG
 1) load page (60 seconds or more)
 2) set zoom to 100%
 3) Open dev tools (ctrl+shift+i)
@@ -295,6 +295,30 @@ To export
 5) type 'screenshot' and select 'Capture full size screenshot'
 -->
 
+<!--
+To export as PNG
+1) load page (60 seconds or more)
+2) set zoom to 100%
+3) Open dev tools (ctrl+shift+i)
+4)  In console:
+var e = document.createElement('script');
+e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js');
+e.setAttribute('class', 'svg-crowbar');
+document.body.appendChild(e);
+-->
+
+
+<!--
+GIMP
+)download GIMP, Google font: Open Sans
+1) file > new (size 48x36 inches)
+2) file > Open as Layer
+3) Scale new layer
+4) Rotate
+5) New layer for annotations_countries
+6) New layer for annotations_water
+
+-->
 
 <!--
 Sources:
@@ -303,4 +327,5 @@ http://bl.ocks.org/almccon/a53831a573911d0a875821c5f9fac6be
 https://observablehq.com/@fil/the-imago-projection
 https://stackoverflow.com/questions/23218174/how-do-i-save-export-an-svg-file-after-creating-an-svg-with-d3-js-ie-safari-an
 https://www.howtogeek.com/423558/how-to-take-full-page-screenshots-in-google-chrome-without-using-an-extension/
+https://fonts.google.com/specimen/Open+Sans
  -->
