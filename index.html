@@ -6,6 +6,12 @@ body {
   overflow: hidden;
 }
 
+svg{
+  border-style: double;
+  border-width: 8px;
+  background: #cce8fe;
+}
+
 /* path {
   fill: #ccc;
   stroke: #fff;
@@ -119,28 +125,6 @@ path.geographicLines.scalerank_0 {
 
 <script>
 
-//Basics
-var defaultHieght=450;
-var defaultWidth=1039.23;
-var scaleFactor=10;
-//not sure what this is accounting for, but it works. 1.4 and 0.6 are made up for this project.
-var bufferHeight = scaleFactor*1.4;
-var bufferWidth = scaleFactor*0.6;
-
-var width = (defaultWidth*scaleFactor)+(bufferWidth*2),
-    height = (defaultHieght*scaleFactor)+(bufferHeight*2);
-
-var projection = d3.geoImago();
-projection.scale(150*scaleFactor);//150 is default
-projection.translate([(width/2)+bufferWidth,(height/2)+bufferHeight]);
-
-var path = d3.geoPath()
-  .projection(projection)
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
 
 //URLs for data
 
@@ -161,7 +145,31 @@ var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natur
 var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
 var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
-var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
+
+
+
+//Basics
+
+d3.json(url_graticules, function(error, graticules_ref) {
+  if (error) throw error;
+
+var height = 450;
+var width = 1039.23;
+var scale = 0.5;
+height *= scale;
+width *= scale;
+
+var projection = d3.geoImago();
+projection.fitExtent([[0, 0], [width, height]], graticules_ref);
+
+var path = d3.geoPath()
+  .projection(projection)
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
 
 //Layers in draw order (top layer will be last listed)
 var layer_ocean = svg.append('g');
@@ -177,106 +185,123 @@ var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
 
+var layer_places = svg.append('g');
 
 
 //Add data to map
-d3.json(url_ocean, function(error, ocean) {
-d3.json(url_bathymetryI2000, function(error, bathymetryI2000) {
-d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
-d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
-d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
-d3.json(url_countries, function(error, countries) {
-d3.json(url_glaciated, function(error, glaciated) {
-d3.json(url_rivers, function(error, rivers) {
-d3.json(url_lakes, function(error, lakes) {
-d3.json(url_countries, function(error, countriesTopLines) {
+// d3.json(url_ocean, function(error, ocean) {
+// d3.json(url_bathymetryI2000, function(error, bathymetryI2000) {
+// d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
+// d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
+// d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
+// d3.json(url_countries, function(error, countries) {
+// d3.json(url_glaciated, function(error, glaciated) {
+// d3.json(url_rivers, function(error, rivers) {
+// d3.json(url_lakes, function(error, lakes) {
+// d3.json(url_countries, function(error, countriesTopLines) {
 d3.json(url_graticules, function(error, graticules) {
-d3.json(url_geographicLines, function(error, geographicLines) {
+// d3.json(url_geographicLines, function(error, geographicLines) {
+
+d3.json(url_places, function(error, places) {
+
 
   if (error) console.log(error);
 
-  layer_ocean.selectAll("path")
-    .data(ocean.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "ocean")
-
-  layer_bathymetryI2000.selectAll("path")
-    .data(bathymetryI2000.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "bathymetryI2000")
-
-  layer_bathymetryG4000.selectAll("path")
-    .data(bathymetryG4000.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "bathymetryG4000")
-
-  layer_bathymetryE6000.selectAll("path")
-    .data(bathymetryE6000.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "bathymetryE6000")
-
-  layer_bathymetryC8000.selectAll("path")
-    .data(bathymetryC8000.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "bathymetryC8000")
-
-  layer_countries.selectAll("path")
-    .data(countries.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", function(d) { return "countries countyColor_"+d.properties.MAPCOLOR7+" "+d.properties.NAME})
-
-  layer_glaciated.selectAll("path")
-    .data(glaciated.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "glaciated")
-
-  layer_rivers.selectAll("path")
-    .data(rivers.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "rivers")
-
-  layer_lakes.selectAll("path")
-    .data(lakes.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "lakes")
-
-  layer_countriesTopLines.selectAll("path")
-    .data(countriesTopLines.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", "countriesTopLines")
-
+  // layer_ocean.selectAll("path")
+  //   .data(ocean.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "ocean")
+  //
+  // layer_bathymetryI2000.selectAll("path")
+  //   .data(bathymetryI2000.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "bathymetryI2000")
+  //
+  // layer_bathymetryG4000.selectAll("path")
+  //   .data(bathymetryG4000.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "bathymetryG4000")
+  //
+  // layer_bathymetryE6000.selectAll("path")
+  //   .data(bathymetryE6000.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "bathymetryE6000")
+  //
+  // layer_bathymetryC8000.selectAll("path")
+  //   .data(bathymetryC8000.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "bathymetryC8000")
+  //
+  // layer_countries.selectAll("path")
+  //   .data(countries.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", function(d) { return "countries countyColor_"+d.properties.MAPCOLOR7+" "+d.properties.NAME})
+  //
+  // layer_glaciated.selectAll("path")
+  //   .data(glaciated.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "glaciated")
+  //
+  // layer_rivers.selectAll("path")
+  //   .data(rivers.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "rivers")
+  //
+  // layer_lakes.selectAll("path")
+  //   .data(lakes.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "lakes")
+  //
+  // layer_countriesTopLines.selectAll("path")
+  //   .data(countriesTopLines.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", "countriesTopLines")
+  //
   layer_graticules.selectAll("path")
     .data(graticules.features)
   .enter().append("path")
     .attr("d", path)
     .attr("class", function(d) { return "graticules degrees_"+d.properties.degrees})
+  //
+  // layer_geographicLines.selectAll("path")
+  //   .data(geographicLines.features)
+  // .enter().append("path")
+  //   .attr("d", path)
+  //   .attr("class", function(d) { return "geographicLines scalerank_"+d.properties.scalerank})
 
-  layer_geographicLines.selectAll("path")
-    .data(geographicLines.features)
-  .enter().append("path")
-    .attr("d", path)
-    .attr("class", function(d) { return "geographicLines scalerank_"+d.properties.scalerank})
 
 
-})
-})
-})
-})
-})
-})
-})
-})
-})
+  //test add text
+  layer_places.selectAll("text")
+  	.data(places.features)
+  .enter().append("text")
+    .attr('transform', function(d) {return 'translate(' + projection(d.geometry.coordinates) + ')';})
+    .attr('cx',function(d) { return projection(d.geometry.coordinates)[0]})
+    .attr('cy',function(d) { return projection(d.geometry.coordinates)[1]})
+    .text("x")
+
+
+// })
+// })
+// })
+// })
+// })
+// })
+// })
+// })
+// })
+// })
+// })
 })
 })
 });
