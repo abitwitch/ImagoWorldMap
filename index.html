@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+
+
 <style>
 
-body {
+body.edit {
+  overflow: scroll;
+  zoom: 1.135; /*adjust to make the ruler accurate*/
+  background-color: #444;
+}
+body.export {
   overflow: hidden;
+  zoom: 1;
 }
 
 svg{
@@ -113,9 +123,19 @@ path.geographicLines.scalerank_0 {
 
 
 
-</style>
 
-<body>
+
+
+/* Label defaults overwritten by textStyle function*/
+text.label_countries {
+  text-transform: uppercase;
+}
+
+
+</style>
+</head>
+
+<body class="edit">
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-array.v2.min.js"></script>
 <script src="https://d3js.org/d3-geo.v2.min.js"></script>
@@ -128,7 +148,7 @@ path.geographicLines.scalerank_0 {
 
 //URLs for data
 
-var detail=10; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
+var detail=110; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
 
 var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_ocean.geojson"
 
@@ -145,30 +165,65 @@ var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natur
 var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
 var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
+var url_labels =                "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/ne_50m_admin_0_countries_point.geojson"
+var url_labels_alters =         "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/textStyleAlters.csv"
 
 
 
-//Basics
+
+
+//Map Basics
 
 d3.json(url_graticules, function(error, graticules_ref) {
   if (error) throw error;
 
 var height = 450;
 var width = 1039.23;
-var scale = 0.5;
+var targetWidthInches=48; //change this only
+var scale = targetWidthInches*96/width; //96 pixels per inchs
 height *= scale;
 width *= scale;
 
 var projection = d3.geoImago();
+projection.reflectX(1);
+projection.reflectY(1);
 projection.fitExtent([[0, 0], [width, height]], graticules_ref);
 
 var path = d3.geoPath()
   .projection(projection)
 
-var svg = d3.select("body").append("svg")
+
+var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+
+//Annotation Style builder funciton
+d3.csv(url_labels_alters, function(alterLookupData) {
+alterLookup={}
+for (var i = 0; i < alterLookupData.length; i++)
+{
+    alterLookup[alterLookupData[i].Name] = alterLookupData[i];
+}
+
+var fontSizeDefault = 16;
+function textStyle(coordinates,name) {
+  var nameUpper = name.toUpperCase();
+  var rotation = 0;
+  var sizeModifier = 0;
+  var translateXModifier = 0;
+  var translateYModifier = 0;
+  if (nameUpper in alterLookup){
+    rotation = alterLookup[nameUpper].Rotation;
+    sizeModifier = Math.max(1,alterLookup[nameUpper].SizeModifier);
+    translateXModifier = alterLookup[nameUpper].TranslateXModifier;
+    translateYModifier = alterLookup[nameUpper].TranslateYModifier;
+  }
+  var returnStr = "transform: translate("+coordinates[0]+"px, "+coordinates[1]+"px) rotate("+rotation+"deg);";
+  returnStr += "font-size: "+(fontSizeDefault+sizeModifier)+";";
+
+  return returnStr;
+}
 
 
 //Layers in draw order (top layer will be last listed)
@@ -184,6 +239,7 @@ var layer_lakes = svg.append('g');
 var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
+var layer_labels = svg.append('g');
 
 var layer_places = svg.append('g');
 
@@ -194,15 +250,14 @@ var layer_places = svg.append('g');
 // d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
 // d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
 // d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
-// d3.json(url_countries, function(error, countries) {
+d3.json(url_countries, function(error, countries) {
 // d3.json(url_glaciated, function(error, glaciated) {
 // d3.json(url_rivers, function(error, rivers) {
 // d3.json(url_lakes, function(error, lakes) {
 // d3.json(url_countries, function(error, countriesTopLines) {
 d3.json(url_graticules, function(error, graticules) {
 // d3.json(url_geographicLines, function(error, geographicLines) {
-
-d3.json(url_places, function(error, places) {
+d3.json(url_labels, function(error, labels) {
 
 
   if (error) console.log(error);
@@ -237,11 +292,11 @@ d3.json(url_places, function(error, places) {
   //   .attr("d", path)
   //   .attr("class", "bathymetryC8000")
   //
-  // layer_countries.selectAll("path")
-  //   .data(countries.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", function(d) { return "countries countyColor_"+d.properties.MAPCOLOR7+" "+d.properties.NAME})
+  layer_countries.selectAll("path")
+    .data(countries.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", function(d) { return "countries countyColor_"+d.properties.MAPCOLOR7+" "+d.properties.NAME})
   //
   // layer_glaciated.selectAll("path")
   //   .data(glaciated.features)
@@ -282,13 +337,15 @@ d3.json(url_places, function(error, places) {
 
 
   //test add text
-  layer_places.selectAll("text")
-  	.data(places.features)
+  layer_labels.selectAll("text")
+  	.data(labels.features)
   .enter().append("text")
-    .attr('transform', function(d) {return 'translate(' + projection(d.geometry.coordinates) + ')';})
-    .attr('cx',function(d) { return projection(d.geometry.coordinates)[0]})
-    .attr('cy',function(d) { return projection(d.geometry.coordinates)[1]})
-    .text("x")
+    .attr("text-anchor", "middle")
+    .attr("font-family", "Open Sans")
+    //.attr('transform', function(d) {return 'translate(' + projection(d.geometry.coordinates) + ')';})
+    .attr("style",function(d) {return textStyle(projection(d.geometry.coordinates),d.properties.NAME)})
+    .text(function(d) { return d.properties.NAME})
+    .attr("class", "label_countries")
 
 
 // })
@@ -301,18 +358,28 @@ d3.json(url_places, function(error, places) {
 // })
 // })
 // })
-// })
+})
+})
 })
 })
 });
 
 
 </script>
+
+
+<div id="map"></div>
+
+<h1>Ruler</h1>
+<div style="height:1in;width:48in;border:solid;">1'x48'</div>
+<div style="height:1in;width:10in;border:solid;">1'x10'</div>
+
 </body>
 </html>
 
 <!--
 To export as PNG
+0) change class on body from 'edit' to 'export', comment out ruler
 1) load page (60 seconds or more)
 2) set zoom to 100%
 3) Open dev tools (ctrl+shift+i)
@@ -322,6 +389,7 @@ To export as PNG
 
 <!--
 To export as PNG
+0) change class on body from 'edit' to 'export', comment out ruler
 1) load page (60 seconds or more)
 2) set zoom to 100%
 3) Open dev tools (ctrl+shift+i)
