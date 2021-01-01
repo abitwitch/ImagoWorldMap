@@ -213,14 +213,17 @@ function textStyle(coordinates,name) {
   var sizeModifier = 0;
   var translateXModifier = 0;
   var translateYModifier = 0;
+  var letterSpacing = 0;
   if (nameUpper in alterLookup){
     rotation = alterLookup[nameUpper].Rotation;
     sizeModifier = Math.max(1,alterLookup[nameUpper].SizeModifier);
-    translateXModifier = alterLookup[nameUpper].TranslateXModifier;
-    translateYModifier = alterLookup[nameUpper].TranslateYModifier;
+    translateXModifier = Number(alterLookup[nameUpper].TranslateXModifier);
+    translateYModifier = Number(alterLookup[nameUpper].TranslateYModifier);
+    letterSpacing = alterLookup[nameUpper].LetterSpacing;
   }
-  var returnStr = "transform: translate("+coordinates[0]+"px, "+coordinates[1]+"px) rotate("+rotation+"deg);";
-  returnStr += "font-size: "+(fontSizeDefault+sizeModifier)+";";
+  var returnStr = "transform: translate("+(coordinates[0]+translateXModifier)+"px, "+(coordinates[1]+translateYModifier)+"px) rotate("+rotation+"deg);";
+  returnStr += "font-size: "+(fontSizeDefault+sizeModifier)+"px;";
+  returnStr += "letter-spacing: "+letterSpacing+"px;";
 
   return returnStr;
 }
