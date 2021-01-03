@@ -126,9 +126,11 @@ path.geographicLines.scalerank_0 {
 
 
 
-/* Label defaults overwritten by textStyle function*/
-text.label_countries {
+/* Label defaults */
+.annotation {
   text-transform: uppercase;
+  font-family: "Open Sans";
+  font-size: 16px;
 }
 
 
@@ -141,6 +143,8 @@ text.label_countries {
 <script src="https://d3js.org/d3-geo.v2.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
 <script src="https://unpkg.com/d3-geo-polygon@1"></script>
+
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 
 
 <script>
@@ -166,7 +170,9 @@ var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natur
 
 var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
 var url_labels =                "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/ne_50m_admin_0_countries_point.geojson"
-var url_labels_alters =         "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/textStyleAlters.csv"
+
+
+var url_annotations =          "file:///home/picard/Documents/AuthagraphMap/test8/v7/Annotations.csv"
 
 
 
@@ -198,36 +204,6 @@ var svg = d3.select("#map").append("svg")
     .attr("height", height);
 
 
-//Annotation Style builder funciton
-d3.csv(url_labels_alters, function(alterLookupData) {
-alterLookup={}
-for (var i = 0; i < alterLookupData.length; i++)
-{
-    alterLookup[alterLookupData[i].Name] = alterLookupData[i];
-}
-
-var fontSizeDefault = 16;
-function textStyle(coordinates,name) {
-  var nameUpper = name.toUpperCase();
-  var rotation = 0;
-  var sizeModifier = 0;
-  var translateXModifier = 0;
-  var translateYModifier = 0;
-  var letterSpacing = 0;
-  if (nameUpper in alterLookup){
-    rotation = alterLookup[nameUpper].Rotation;
-    sizeModifier = Math.max(1,alterLookup[nameUpper].SizeModifier);
-    translateXModifier = Number(alterLookup[nameUpper].TranslateXModifier);
-    translateYModifier = Number(alterLookup[nameUpper].TranslateYModifier);
-    letterSpacing = alterLookup[nameUpper].LetterSpacing;
-  }
-  var returnStr = "transform: translate("+(coordinates[0]+translateXModifier)+"px, "+(coordinates[1]+translateYModifier)+"px) rotate("+rotation+"deg);";
-  returnStr += "font-size: "+(fontSizeDefault+sizeModifier)+"px;";
-  returnStr += "letter-spacing: "+letterSpacing+"px;";
-
-  return returnStr;
-}
-
 
 //Layers in draw order (top layer will be last listed)
 var layer_ocean = svg.append('g');
@@ -242,9 +218,12 @@ var layer_lakes = svg.append('g');
 var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
-var layer_labels = svg.append('g');
+//var layer_labels = svg.append('g');
 
 var layer_places = svg.append('g');
+
+
+var layer_annotations = svg.append('g');
 
 
 //Add data to map
@@ -261,6 +240,7 @@ d3.json(url_countries, function(error, countries) {
 d3.json(url_graticules, function(error, graticules) {
 // d3.json(url_geographicLines, function(error, geographicLines) {
 d3.json(url_labels, function(error, labels) {
+d3.csv(url_annotations, function(annotations_data) {
 
 
   if (error) console.log(error);
@@ -339,16 +319,53 @@ d3.json(url_labels, function(error, labels) {
 
 
 
-  //test add text
-  layer_labels.selectAll("text")
-  	.data(labels.features)
-  .enter().append("text")
-    .attr("text-anchor", "middle")
-    .attr("font-family", "Open Sans")
-    //.attr('transform', function(d) {return 'translate(' + projection(d.geometry.coordinates) + ')';})
-    .attr("style",function(d) {return textStyle(projection(d.geometry.coordinates),d.properties.NAME)})
-    .text(function(d) { return d.properties.NAME})
-    .attr("class", "label_countries")
+
+// Add annotation to the map
+annotations = [];
+for (var i = 0; i < annotations_data.length; i++) {
+  var xy=projection([Number(annotations_data[i].Longitude_x),Number(annotations_data[i].Latitude_y)]);
+  annotations.push({
+    note: {
+      label: annotations_data[i].note_label,
+      title: annotations_data[i].note_title
+    },
+    x: xy[0],
+    y: xy[1],
+    dy: annotations_data[i].dy,
+    dx: annotations_data[i].dx,
+    data: {fontSize:annotations_data[i].data_fontSize,class:annotations_data[i].data_class,rotate:annotations_data[i].data_rotate,spacing:annotations_data[i].data_spacing}
+  });
+}
+
+const makeAnnotations = d3.annotation()
+  .type(d3.annotationLabel)
+  .annotations(annotations)
+
+layer_annotations.call(makeAnnotations)
+
+// function buildAnnotationStyle (d) {
+//   var returnStr = "";
+//   if(d.data.fontSize) {
+//     returnStr += "font-size: "+d.data.fontSize+"; "
+//   }
+//   returnStr += "letter-spacing: "+d.data.spacing+
+// }
+
+
+layer_annotations.selectAll(".annotation")
+.data(annotations)
+//add annotation size and spacing override modifier
+.attr("style", function(d) {if(d.data.fontSize) {return "font-size: "+d.data.fontSize+"; letter-spacing: "+d.data.spacing+";"} return "letter-spacing: "+d.data.spacing+";";})
+//add annotation class append
+.attr("class", function(d) {return "annotation lable "+d.data.class;})
+
+//add annotation rotation
+layer_annotations.selectAll(".annotation-note-title").data(annotations)
+.attr("style", function(d) {if(d.data.rotate) {return "transform: rotate("+d.data.rotate+"deg);";} return "";});
+
+
+
+window.scrollTo(0, 0);//todo remove
 
 
 // })
@@ -403,6 +420,9 @@ e.setAttribute('class', 'svg-crowbar');
 document.body.appendChild(e);
 -->
 
+<!--
+To allow local file transfer: "google-chrome --allow-file-access-from-files"
+-->
 
 <!--
 GIMP
