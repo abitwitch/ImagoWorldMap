@@ -131,6 +131,9 @@ path.geographicLines.scalerank_0 {
   text-transform: uppercase;
   font-family: "Open Sans";
 }
+.annotation-note-label {
+  font-style: italic;
+}
 
 
 </style>
@@ -336,9 +339,16 @@ for (var i = 0; i < annotations_data.length; i++) {
   //build subgroup structure
   var annotElem = layer_annotations.append("g");
   annotElem.attr("style",styleStr).attr("class", function(d) {return "annotation lable "+annotations_data[i].data_class;});
-  annotElem.append("text").text(annotations_data[i].note_title).attr("text-anchor", "middle");
+  //split into lines by "_" character
+  var lines = annotations_data[i].note_title.split("_");
+  for (var ii = 0; ii < lines.length; ii++) {
+    annotElem.append("text").text(lines[ii]).attr("text-anchor", "middle")
+     .attr("class", "annotation-note-title")
+     .attr("style","transform: translate(0px,"+fontSize*ii+"px);");
+  }
   annotElem.append("text").text(annotations_data[i].note_label).attr("text-anchor", "middle")
-    .attr("style","transform: translate(0px,"+fontSize+"px);");
+    .attr("class", "annotation-note-label")
+    .attr("style","transform: translate(0px,"+fontSize*ii+"px);");
   //add callout line if needed
   if (annotations_data[i].callout_x1!=annotations_data[i].callout_x2 || annotations_data[i].callout_y1!=annotations_data[i].callout_y2) {
     annotElem.append("line").attr("class", "connector").attr("stroke", "grey").attr("fill", "none")
