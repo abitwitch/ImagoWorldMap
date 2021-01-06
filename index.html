@@ -15,6 +15,9 @@ body.export {
   overflow: hidden;
   zoom: 1;
 }
+.export div#ruler{
+  display: none;
+}
 
 svg{
   border-style: double;
@@ -121,11 +124,6 @@ path.geographicLines.scalerank_0 {
 }
 
 
-
-
-
-
-
 /* Label defaults */
 .annotation.country {
   text-transform: uppercase;
@@ -147,7 +145,7 @@ path.geographicLines.scalerank_0 {
 </style>
 </head>
 
-<body class="edit">
+<body class="export"> <!-- change body class to "edit" or "export" -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-array.v2.min.js"></script>
 <script src="https://d3js.org/d3-geo.v2.min.js"></script>
@@ -178,11 +176,7 @@ var url_lakes =                 "https://raw.githubusercontent.com/nvkelso/natur
 var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_graticules_10.geojson"
 var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
-var url_places =                "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_populated_places_simple.geojson"
-var url_labels =                "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/ne_50m_admin_0_countries_point.geojson"
-
-
-var url_annotations =          "file:///home/picard/Documents/AuthagraphMap/test8/v9/Annotations.csv"
+var url_annotations =           "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/Annotations.csv"
 
 
 
@@ -228,7 +222,6 @@ var layer_lakes = svg.append('g');
 var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
-//var layer_labels = svg.append('g');
 
 var layer_places = svg.append('g');
 
@@ -237,78 +230,77 @@ var layer_annotations = svg.append('g');
 
 
 //Add data to map
-// d3.json(url_ocean, function(error, ocean) {
-// d3.json(url_bathymetryI2000, function(error, bathymetryI2000) {
-// d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
-// d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
-// d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
+d3.json(url_ocean, function(error, ocean) {
+d3.json(url_bathymetryI2000, function(error, bathymetryI2000) {
+d3.json(url_bathymetryG4000, function(error, bathymetryG4000) {
+d3.json(url_bathymetryE6000, function(error, bathymetryE6000) {
+d3.json(url_bathymetryC8000, function(error, bathymetryC8000) {
 d3.json(url_countries, function(error, countries) {
-// d3.json(url_glaciated, function(error, glaciated) {
-// d3.json(url_rivers, function(error, rivers) {
-// d3.json(url_lakes, function(error, lakes) {
+d3.json(url_glaciated, function(error, glaciated) {
+d3.json(url_rivers, function(error, rivers) {
+d3.json(url_lakes, function(error, lakes) {
 d3.json(url_countries, function(error, countriesTopLines) {
 d3.json(url_graticules, function(error, graticules) {
-// d3.json(url_geographicLines, function(error, geographicLines) {
-d3.json(url_labels, function(error, labels) {
+d3.json(url_geographicLines, function(error, geographicLines) {
 d3.csv(url_annotations, function(annotations_data) {
 
 
   if (error) console.log(error);
 
-  // layer_ocean.selectAll("path")
-  //   .data(ocean.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "ocean")
-  //
-  // layer_bathymetryI2000.selectAll("path")
-  //   .data(bathymetryI2000.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "bathymetryI2000")
-  //
-  // layer_bathymetryG4000.selectAll("path")
-  //   .data(bathymetryG4000.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "bathymetryG4000")
-  //
-  // layer_bathymetryE6000.selectAll("path")
-  //   .data(bathymetryE6000.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "bathymetryE6000")
-  //
-  // layer_bathymetryC8000.selectAll("path")
-  //   .data(bathymetryC8000.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "bathymetryC8000")
-  //
+  layer_ocean.selectAll("path")
+    .data(ocean.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "ocean")
+
+  layer_bathymetryI2000.selectAll("path")
+    .data(bathymetryI2000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryI2000")
+
+  layer_bathymetryG4000.selectAll("path")
+    .data(bathymetryG4000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryG4000")
+
+  layer_bathymetryE6000.selectAll("path")
+    .data(bathymetryE6000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryE6000")
+
+  layer_bathymetryC8000.selectAll("path")
+    .data(bathymetryC8000.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "bathymetryC8000")
+
   layer_countries.selectAll("path")
     .data(countries.features)
   .enter().append("path")
     .attr("d", path)
     .attr("class", function(d) { return "countries countyColor_"+d.properties.MAPCOLOR7+" "+d.properties.NAME})
-  //
-  // layer_glaciated.selectAll("path")
-  //   .data(glaciated.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "glaciated")
-  //
-  // layer_rivers.selectAll("path")
-  //   .data(rivers.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "rivers")
-  //
-  // layer_lakes.selectAll("path")
-  //   .data(lakes.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", "lakes")
-  //
+
+  layer_glaciated.selectAll("path")
+    .data(glaciated.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "glaciated")
+
+  layer_rivers.selectAll("path")
+    .data(rivers.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "rivers")
+
+  layer_lakes.selectAll("path")
+    .data(lakes.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", "lakes")
+
   layer_countriesTopLines.selectAll("path")
     .data(countriesTopLines.features)
   .enter().append("path")
@@ -320,12 +312,12 @@ d3.csv(url_annotations, function(annotations_data) {
   .enter().append("path")
     .attr("d", path)
     .attr("class", function(d) { return "graticules degrees_"+d.properties.degrees})
-  //
-  // layer_geographicLines.selectAll("path")
-  //   .data(geographicLines.features)
-  // .enter().append("path")
-  //   .attr("d", path)
-  //   .attr("class", function(d) { return "geographicLines scalerank_"+d.properties.scalerank})
+
+  layer_geographicLines.selectAll("path")
+    .data(geographicLines.features)
+  .enter().append("path")
+    .attr("d", path)
+    .attr("class", function(d) { return "geographicLines scalerank_"+d.properties.scalerank})
 
 
 
@@ -367,20 +359,19 @@ for (var i = 0; i < annotations_data.length; i++) {
   }
 }
 
+if (document.querySelector("body").classList.contains("edit")){
+  window.scrollTo(6000, 1000);
+}
 
-window.scrollTo(6000, 1000);//todo remove
-// http://holtz.org/Library/Images/Maps/Earth/NG%20The%20World.jpg
-// https://upload.wikimedia.org/wikipedia/commons/0/03/Political_Map_of_the_World_%28august_2013%29.png
 
-// })
-// })
-// })
-// })
-// })
-// })
-// })
-// })
-// })
+})
+})
+})
+})
+})
+})
+})
+})
 })
 })
 })
@@ -394,30 +385,34 @@ window.scrollTo(6000, 1000);//todo remove
 
 <div id="map"></div>
 
-<h1>Ruler</h1>
-<div style="height:1in;width:48in;border:solid;">1'x48'</div>
-<div style="height:1in;width:10in;border:solid;">1'x10'</div>
+<div id="ruler">
+  <h1>Ruler</h1>
+    <div style="height:1in;width:48in;border:solid;">1'x48'</div>
+    <div style="height:1in;width:10in;border:solid;">1'x10'</div>
+</div>
 
 </body>
 </html>
 
 <!--
 To export as PNG
-0) change class on body from 'edit' to 'export', comment out ruler
-1) load page (60 seconds or more)
-2) set zoom to 100%
-3) Open dev tools (ctrl+shift+i)
-3) Open command prompt (ctrl+shift+p)
-5) type 'screenshot' and select 'Capture full size screenshot'
+1) change class on body from 'edit' to 'export', comment out ruler
+2) make sure detail is low enough (usually '10')
+3) load page (60 seconds or more)
+4) set zoom to 100%
+5) Open dev tools (ctrl+shift+i)
+6) Open command prompt (ctrl+shift+p)
+7) type 'screenshot' and select 'Capture full size screenshot'
 -->
 
 <!--
 To export as PNG
-0) change class on body from 'edit' to 'export', comment out ruler
-1) load page (60 seconds or more)
-2) set zoom to 100%
-3) Open dev tools (ctrl+shift+i)
-4)  In console:
+1) change class on body from 'edit' to 'export', comment out ruler
+2) make sure detail is low enough (usually '10')
+3) load page (60 seconds or more)
+4) set zoom to 100%
+5) Open dev tools (ctrl+shift+i)
+6)  In console:
 var e = document.createElement('script');
 e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js');
 e.setAttribute('class', 'svg-crowbar');
@@ -425,28 +420,11 @@ document.body.appendChild(e);
 -->
 
 <!--
-Note on first load or hard refresh the map annotations are a little off. "document.fonts.ready" doesn't appear to fix this. Before exporting, load then refresh the page.
+Notes:
+  -"_" will make a new line in "Annotations.csv" under "note_title" and "note_label"
+  -To allow local file transfer: "google-chrome --allow-file-access-from-files"
 -->
 
-<!--
-"_" will make a new line in "Annotations.csv" under "note_title" and "note_label"
--->
-
-<!--
-To allow local file transfer: "google-chrome --allow-file-access-from-files"
--->
-
-<!--
-GIMP
-)download GIMP, Google font: Open Sans
-1) file > new (size 48x36 inches)
-2) file > Open as Layer
-3) Scale new layer
-4) Rotate
-5) New layer for annotations_countries
-6) New layer for annotations_water
-
--->
 
 <!--
 Sources:
@@ -457,4 +435,5 @@ https://stackoverflow.com/questions/23218174/how-do-i-save-export-an-svg-file-af
 https://www.howtogeek.com/423558/how-to-take-full-page-screenshots-in-google-chrome-without-using-an-extension/
 https://fonts.google.com/specimen/Open+Sans
 https://d3-annotation.susielu.com/
+https://upload.wikimedia.org/wikipedia/commons/0/03/Political_Map_of_the_World_%28august_2013%29.png
  -->
