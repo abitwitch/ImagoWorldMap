@@ -2,13 +2,15 @@
 <meta charset="utf-8">
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
 
 <style>
 
 body.edit {
   overflow: scroll;
-  zoom: 1.135; /*adjust to make the ruler accurate*/
+  zoom: 1.135; /*adjust to make the ruler accurate  1.135*/
   background-color: #444;
 }
 body.export {
@@ -24,12 +26,6 @@ svg{
   border-width: 8px;
   background: #cce8fe;
 }
-
-/* path {
-  fill: #ccc;
-  stroke: #fff;
-  stroke-width: .5px;
-} */
 
 path.ocean {
   fill: #cce8fe;
@@ -125,20 +121,50 @@ path.geographicLines.scalerank_0 {
 
 
 /* Label defaults */
-.annotation.country {
-  text-transform: uppercase;
+.annotation {
   font-family: "Open Sans";
 }
+.annotation.country {
+  text-transform: uppercase;
+}
 .annotation.island, .annotation.territory {
-  font-family: "Open Sans";
-  color: red;
 }
 .annotation-note-label {
   font-style: italic;
-  font-family: "Open Sans";
 }
 .hide {
   display: none;
+}
+.annotation.ocean {
+  font-style: italic;
+  text-transform: uppercase;
+  stroke: #008fff;
+  font-family: "Open Sans Light";
+}
+.annotation.sea {
+  font-style: italic;
+  stroke: #008fff;
+  font-family: "Open Sans Light";
+}
+
+/* Map Metadata */
+.annotation.about_title {
+  font-family: "Oswald";
+}
+.annotation.about_title_shadow {
+  font-family: "Oswald";
+  stroke: white;
+  stroke-width: 4px;
+  opacity: 0.8;
+}
+.annotation.about_info {
+  font-family: "Roboto";
+}
+.annotation.about_info_shadow {
+  font-family: "Roboto";
+  stroke: white;
+  stroke-width: 4px;
+  opacity: 0.8;
 }
 
 
@@ -152,15 +178,12 @@ path.geographicLines.scalerank_0 {
 <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
 <script src="https://unpkg.com/d3-geo-polygon@1"></script>
 
-<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-
-
 <script>
 
 
 //URLs for data
 
-var detail=50; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
+var detail=10; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
 
 var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_ocean.geojson"
 
@@ -177,8 +200,6 @@ var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natur
 var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
 var url_annotations =           "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/Annotations.csv"
-
-
 
 
 
@@ -208,7 +229,6 @@ var svg = d3.select("#map").append("svg")
     .attr("height", height);
 
 
-
 //Layers in draw order (top layer will be last listed)
 var layer_ocean = svg.append('g');
 var layer_bathymetryI2000 = svg.append('g');
@@ -222,11 +242,8 @@ var layer_lakes = svg.append('g');
 var layer_countriesTopLines = svg.append('g');
 var layer_graticules = svg.append('g');
 var layer_geographicLines = svg.append('g');
-
-var layer_places = svg.append('g');
-
-
 var layer_annotations = svg.append('g');
+var layer_mapMeta = svg.append('g');
 
 
 //Add data to map
@@ -239,7 +256,6 @@ d3.json(url_countries, function(error, countries) {
 d3.json(url_glaciated, function(error, glaciated) {
 d3.json(url_rivers, function(error, rivers) {
 d3.json(url_lakes, function(error, lakes) {
-d3.json(url_countries, function(error, countriesTopLines) {
 d3.json(url_graticules, function(error, graticules) {
 d3.json(url_geographicLines, function(error, geographicLines) {
 d3.csv(url_annotations, function(annotations_data) {
@@ -302,7 +318,7 @@ d3.csv(url_annotations, function(annotations_data) {
     .attr("class", "lakes")
 
   layer_countriesTopLines.selectAll("path")
-    .data(countriesTopLines.features)
+    .data(countries.features)
   .enter().append("path")
     .attr("d", path)
     .attr("class", "countriesTopLines")
@@ -359,12 +375,17 @@ for (var i = 0; i < annotations_data.length; i++) {
   }
 }
 
+
+//Add map metadate (title, about, sources, etc)
+d3.selectAll('.about_info').selectAll('text').attr("text-anchor", "left");
+d3.selectAll('.about_info_shadow').selectAll('text').attr("text-anchor", "left");
+
+//Jump scrollbat to... (helpful when editing annotations)
 if (document.querySelector("body").classList.contains("edit")){
-  window.scrollTo(6000, 1000);
+  window.scrollTo(0, 1000);
 }
 
 
-})
 })
 })
 })
