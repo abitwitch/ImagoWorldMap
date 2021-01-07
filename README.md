@@ -13,6 +13,7 @@ You may notice the map appears 'upsidedown'. This was a design choice.
 * The "Annotations.csv" is used for lableing of the map. 'index.html' points directly to the github repository.
 * Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.
 * ImagoMap.png is a high-res PNG of the resulting map
+* ImagoMap_LowRes.jpg is a low-res JPG of the resulting map
 
 # To install:
 * Download index.html and load it in a web browser. (Developed with Chrome Version 68.0.3440.75).
