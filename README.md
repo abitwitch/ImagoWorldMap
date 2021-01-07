@@ -12,7 +12,7 @@ You may notice the map appears 'upsidedown'. This was a design choice.
 * The index.html file should stand-alone and has no dependencies. All resources are linked directly within the document.
 * The "Annotations.csv" is used for lableing of the map. 'index.html' points directly to the github repository.
 * Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.
-* ImagoMap_HighRes.png is a high-res PNG of the resulting map
+* ImagoMap.png is a high-res PNG of the resulting map
 * ImagoMap_LowRes.jpg is a low-res JPG of the resulting map
 
 # To install:
