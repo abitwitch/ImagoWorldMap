@@ -15,7 +15,7 @@ body.edit {
 }
 body.export {
   overflow: hidden;
-  zoom: 1;
+  zoom: 10;
 }
 .export div#ruler{
   display: none;
@@ -183,7 +183,7 @@ path.geographicLines.scalerank_0 {
 
 //URLs for data
 
-var detail=10; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
+var detail=50; //10, 50 or 110 (from Natural Earth). Not all layers are availible at all detail levels
 
 var url_ocean =                 "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_ocean.geojson"
 
@@ -418,7 +418,7 @@ if (document.querySelector("body").classList.contains("edit")){
 <!--
 To export as PNG
 1) change class on body from 'edit' to 'export', comment out ruler
-2) make sure detail is low enough (usually '10')
+2) make sure detail is low enough (usually '50')
 3) load page (60 seconds or more)
 4) set zoom to 100%
 5) Open dev tools (ctrl+shift+i)
@@ -429,7 +429,7 @@ To export as PNG
 <!--
 To export as PNG
 1) change class on body from 'edit' to 'export', comment out ruler
-2) make sure detail is low enough (usually '10')
+2) make sure detail is low enough (usually '50')
 3) load page (60 seconds or more)
 4) set zoom to 100%
 5) Open dev tools (ctrl+shift+i)
