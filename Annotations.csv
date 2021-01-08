@@ -210,6 +210,7 @@ Latitude_y,Longitude_x,x_offset,y_offset,note_title,note_label,callout_x1,callou
 15.9552332421415,-23.9598882025518,0,-30,Cabo Verde,,0,0,0,0,,country,0,0
 61.362063243694,-98.3077702819014,0,-40,Canada,,0,0,0,0,26,country,0,15
 64.77270566755665,-150.96883839482925,0,0,Alaska,(USA),0,0,0,0,,territory,0,0
+19.794218260520154,-159.3173216629093,-4,-4,Hawaii,(USA),0,0,0,0,12,island,0,0
 5.69109848985865,12.7396415575373,0,0,Cameroon,,0,0,0,0,,country,0,0
 12.7200478566511,104.906943249431,-4,0,Cambodia,,0,0,0,0,12,country,0,0
 21.1856659926903,96.488433210418,0,0,Myanmar,,0,0,0,0,14,country,0,0
@@ -232,7 +233,7 @@ Latitude_y,Longitude_x,x_offset,y_offset,note_title,note_label,callout_x1,callou
 24.2903670222698,-76.6284303801639,0,0,Bahamas,,0,0,0,0,10,country,0,0
 40.2882723471047,47.5459987891545,0,0,Azerbaijan,,0,0,0,0,12,country,0,0
 47.585494392036,14.1264760996378,0,0,Austria,,0,0,0,0,10,country,0,0
--25.7328870417306,134.491000082134,0,0,Australia,,0,0,0,0,26,country,0,10
+-25.7328870417306,134.491000082134,45,25,Australia,,0,0,0,0,26,country,0,10
 -10.6478514973436,104.851897951828,0,0,Indian Ocean Ter.,,0,0,0,0,,hide,0,0
 -53.0872465617931,73.5205171004493,0,-25,Heard Island and_McDonald Islands,(AU),0,0,0,0,8,island,0,0
 -29.0514609043833,167.949216782131,0,-15,Norfolk Island,(AU),0,0,0,0,10,island,0,0
@@ -294,11 +295,11 @@ Latitude_y,Longitude_x,x_offset,y_offset,note_title,note_label,callout_x1,callou
 -40.84438326341526, 160.71806916110893,0,0,Tasman Sea,,0,0,0,0,10,sea,0,0
 -35.635518441106655, 131.0343450720783,0,0,Great Australian Bight,,0,0,0,0,10,sea,0,0
 14.550973544809517, -75.03470429657379,10,-19,Caribbean_Sea,,0,0,0,0,12,sea,0,0
-25.43284830083298, -90.19012697378466,0,0,Gulf_of_Mexico,,0,0,0,0,12,sea,0,0
+25.43284830083298, -90.19012697378466,0,-25,Gulf_of_Mexico,,0,0,0,0,12,sea,0,0
 27.537562355885974, -111.45997887186047,-20,-3,Gulf of California,,0,0,0,0,10,sea,18,0
 76.0767812043355, 125.9138259028484,0,0,Laptev Sea,,0,0,0,0,12,sea,0,0
-74.95627800756205, 73.44312376921836,0,20,Kara Sea,,0,0,0,0,12,sea,0,0
+74.95627800756205, 73.44312376921836,0,8,Kara Sea,,0,0,0,0,12,sea,0,0
 -22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,about_title_shadow,0,10
 -22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,about_title,0,10
--0.0492798509591457,-14.005135471760056,0,0,This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,16,about_info_shadow,0,0
--0.0492798509591457,-14.005135471760056,0,0,This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,16,about_info,0,0
+-0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info_shadow,0,0
+-0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info,0,0
