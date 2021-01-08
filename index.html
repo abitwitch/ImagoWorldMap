@@ -15,7 +15,7 @@ body.edit {
 }
 body.export {
   overflow: hidden;
-  zoom: 10;
+  zoom: 3;
 }
 .export div#ruler{
   display: none;
@@ -200,7 +200,6 @@ var url_graticules =            "https://raw.githubusercontent.com/nvkelso/natur
 var url_geographicLines =       "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_"+detail+"m_geographic_lines.geojson"
 
 var url_annotations =           "https://raw.githubusercontent.com/hua256/ImagoWorldMap/main/Annotations.csv"
-
 
 
 //Map Basics
@@ -419,25 +418,10 @@ if (document.querySelector("body").classList.contains("edit")){
 To export as PNG
 1) change class on body from 'edit' to 'export', comment out ruler
 2) make sure detail is low enough (usually '50')
-3) load page (60 seconds or more)
-4) set zoom to 100%
-5) Open dev tools (ctrl+shift+i)
-6) Open command prompt (ctrl+shift+p)
-7) type 'screenshot' and select 'Capture full size screenshot'
--->
-
-<!--
-To export as PNG
-1) change class on body from 'edit' to 'export', comment out ruler
-2) make sure detail is low enough (usually '50')
-3) load page (60 seconds or more)
-4) set zoom to 100%
-5) Open dev tools (ctrl+shift+i)
-6)  In console:
-var e = document.createElement('script');
-e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js');
-e.setAttribute('class', 'svg-crowbar');
-document.body.appendChild(e);
+3) load page using chrome (60 seconds or more)
+4) Open dev tools (ctrl+shift+i)
+5) Open command prompt (ctrl+shift+p)
+6) type 'screenshot' and select 'Capture full size screenshot'
 -->
 
 <!--
@@ -445,7 +429,6 @@ Notes:
   -"_" will make a new line in "Annotations.csv" under "note_title" and "note_label"
   -To allow local file transfer: "google-chrome --allow-file-access-from-files"
 -->
-
 
 <!--
 Sources:
