@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+<script src="https://unpkg.com/d3-geo-polygon@1"></script>
 
 <style>
+
+#loading {
+  font-size: 72px;
+}
 
 body.edit {
   overflow: scroll;
@@ -172,11 +182,8 @@ path.geographicLines.scalerank_0 {
 </head>
 
 <body class="export"> <!-- change body class to "edit" or "export" -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/d3-array.v2.min.js"></script>
-<script src="https://d3js.org/d3-geo.v2.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
-<script src="https://unpkg.com/d3-geo-polygon@1"></script>
+
+<div id="loading">Loading...</div>
 
 <script>
 
@@ -383,6 +390,9 @@ d3.selectAll('.about_info_shadow').selectAll('text').attr("text-anchor", "left")
 if (document.querySelector("body").classList.contains("edit")){
   window.scrollTo(0, 1000);
 }
+
+//hide loading
+document.getElementById("loading").style.display = "none";
 
 
 })
