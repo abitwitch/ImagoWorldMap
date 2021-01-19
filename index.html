@@ -18,6 +18,10 @@
   font-size: 72px;
 }
 
+body{
+  margin:0;
+}
+
 body.edit {
   overflow: scroll;
   zoom: 1.135; /*adjust to make the ruler accurate  1.135*/
@@ -181,7 +185,7 @@ path.geographicLines.scalerank_0 {
 </style>
 </head>
 
-<body class="export"> <!-- change body class to "edit" or "export" -->
+<body class="edit"> <!-- change body class to "edit" or "export" -->
 
 <div id="loading">Loading...</div>
 
@@ -214,7 +218,7 @@ var url_annotations =           "https://raw.githubusercontent.com/hua256/ImagoW
 d3.json(url_graticules, function(error, graticules_ref) {
   if (error) throw error;
 
-var height = 450;
+var height = 450+0.5; // the 0.5 makes it fit better in it's border (otherwise there is a very small empty space)
 var width = 1039.23;
 var targetWidthInches=48; //change this only (labels built using 48inches)
 var scale = targetWidthInches*96/width; //96 pixels per inchs
