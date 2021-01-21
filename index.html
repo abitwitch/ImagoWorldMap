@@ -363,7 +363,7 @@ for (var i = 0; i < annotations_data.length; i++) {
   if (annotations_data[i].data_fontSize) {
     fontSize = annotations_data[i].data_fontSize
   }
-  styleStr += "font-size: "+annotations_data[i].data_fontSize+";";
+  styleStr += "font-size: "+fontSize+"px;";
   styleStr+="transform: translate("+xy[0]+"px,"+xy[1]+"px) rotate("+annotations_data[i].data_rotate+"deg);";
   //build subgroup structure
   var annotElem = layer_annotations.append("g");
