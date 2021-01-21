@@ -197,7 +197,7 @@ Latitude_y,Longitude_x,x_offset,y_offset,note_title,note_label,callout_x1,callou
 45.0804763057065,16.4041289939516,0,10,Croatia,,0,0,0,0,9,country,0,0
 7.6284262023542,-5.56921569979733,0,0,Côte_d'Ivoire,,0,0,0,0,,country,0,0
 9.97634463839699,-84.1920876775362,0,-8,Costa_Rica,,0,0,0,0,12,country,0,0
--2.87746288969974,23.6439610660395,-29,0,Democratic Republic_of the Congo,,0,0,0,0,,country,0,0
+-2.87746288969974,23.6439610660395,-9,0,Democratic_Republic_of the Congo,,0,0,0,0,,country,0,0
 -0.837874631183661,15.2196576195159,0,-12,Republic_of the Congo,,0,0,0,0,12,country,0,0
 -11.8778344355281,43.6825396847678,-40,0,Comoros,,0,0,0,0,12,country,0,0
 3.91383430725032,-73.0811458240929,0,0,Colombia,,0,0,0,0,,country,0,0
