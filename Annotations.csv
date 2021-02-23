@@ -299,7 +299,7 @@ Latitude_y,Longitude_x,x_offset,y_offset,note_title,note_label,callout_x1,callou
 27.537562355885974, -111.45997887186047,-20,-3,Gulf of California,,0,0,0,0,10,sea,18,0
 76.0767812043355, 125.9138259028484,0,0,Laptev Sea,,0,0,0,0,12,sea,0,0
 74.95627800756205, 73.44312376921836,0,8,Kara Sea,,0,0,0,0,12,sea,0,0
--22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,about_title_shadow,0,10
--22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,about_title,0,10
--0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info_shadow,0,0
--0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 javasctipt libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info,0,0
+-22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,hide,0,10
+-22.36123298358317,-133.5609931989008,0,70,World Map,,0,0,0,0,72,hide,0,10
+-0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 JavaScript libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info_shadow,0,0
+-0.0492798509591457,-14.005135471760056,0,0,__This map uses the 'Imago' projection (Justin Kunimune 2017) which was_inspired by Hajime Narukawa’s award-winning AuthaGraph design (1999).__This map was built using the d3 JavaScript libraries._Source code can be found at: github.com/hua256/ImagoWorldMap__Created by Josh Chisholm (2021),,0,0,0,0,12,about_info,0,0
